@@ -42,7 +42,7 @@ router.post('/', async (req, res)=> {
 })
 
 //update one
-router.patch('/:id', async (req, res)=> {
+router.patch('/:id', getAuthor,  async (req, res)=> {
 	if(req.body.name != null){
 		res.author.name = req.body.name
 	}
@@ -68,7 +68,7 @@ router.patch('/:id', async (req, res)=> {
 //delete one
 router.delete('/:id', getAuthor, async (req, res)=> {
 	try{
-		await res.author.remove()
+		await res.author.deleteOne({_id: req.params.id});
 		res.json({ message: 'Author deleted'})
 	} catch (err){
 		res.status(500).json({ message:err.message})

@@ -14,7 +14,6 @@ router.get('/', async (req, res) =>{
 	}
 })
 
-
 //getting one
 router.get('/:id', getRecipe, (req, res)=> {
 	res.json(res.recipe)
@@ -51,9 +50,9 @@ router.post('/', async (req, res)=> {
 })
 
 //update one
-router.patch('/:id', async (req, res)=> {
+router.patch('/:id', getRecipe, async (req, res)=> {
 	if(req.body.title != null){
-		res.author.title = req.body.title
+		res.recipe.title = req.body.title
 	}
 	if (req.body.author != null){
 		res.recipe.author = req.body.author
@@ -103,7 +102,7 @@ router.patch('/:id', async (req, res)=> {
 //delete one
 router.delete('/:id', getRecipe, async (req, res)=> {
 	try{
-		await res.recipe.remove()
+		await res.recipe.deleteOne({_id: req.params.id});
 		res.json({ message: 'Recipe deleted'})
 	} catch (err){
 		res.status(500).json({ message:err.message})
